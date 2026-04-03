@@ -16,6 +16,7 @@ npm-debug.log*
 # editor
 *.local
 .DS_Store
+.vscode/
 
 # vite
 *.local

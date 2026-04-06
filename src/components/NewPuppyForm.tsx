@@ -28,7 +28,7 @@ export function NewPuppyForm({
                         name: formData.get("name") as string,
                         trait: formData.get("trait") as string,
                         imagePath: `/images/${Math.floor(Math.random() * 16) + 7}.jpg`,
-                        liked: false,
+                        likedBy: [1]
                     };
 
                     setPuppies([...puppies, newPuppy]);

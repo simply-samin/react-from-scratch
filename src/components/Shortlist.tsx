@@ -1,18 +1,19 @@
-import { X } from "lucide-react";
+import { LoaderCircle, X } from "lucide-react";
 import { Puppy } from "../types";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Heart } from "lucide-react";
+import { toggleLikedStatus } from "../queries";
 
-export function Shortlist({ 
+export function Shortlist({
     puppies,
-    liked,
-    setLiked, 
-}: { 
+    setPuppies,
+}: {
     puppies: Puppy[];
-    liked: Puppy["id"][];
-    setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
+    setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
-    const shortlistedPuppies = puppies.filter((puppy) => liked.includes(puppy.id));
+    const shortlistedPuppies = puppies.filter((puppy) =>
+        puppy.likedBy.includes(1),
+    );
 
     return (
         <div>
@@ -33,21 +34,50 @@ export function Shortlist({
                             className="aspect-square w-8 object-cover"
                             src={puppy.imagePath}
                         />
-                        <p className="px-3 text-sm text-slate-800">{puppy.name}</p>
-                        <button
-                            className="group h-full border-l border-slate-100 px-2 hover:bg-slate-100"
-                            onClick={() =>
-                                setLiked(liked.filter((pupId) => pupId !== puppy.id))
-                            }
-                        >   
-                            <X className="size-4 stroke-slate-400 group-hover:stroke-red-400" />
-                        </button>
+                        <p className="px-3 text-sm text-slate-800">
+                            {puppy.name}
+                        </p>
+                        <DeleteButton
+                            puppyId={puppy.id}
+                            setPuppies={setPuppies}
+                        />
                     </li>
                 ))}
                 {shortlistedPuppies.length === 0 ? (
-                    <p className="text-sm text-slate-500">No liked puppies yet.</p>
+                    <p className="text-sm text-slate-500">
+                        No liked puppies yet.
+                    </p>
                 ) : null}
             </ul>
         </div>
+    );
+}
+
+function DeleteButton({
+    puppyId,
+    setPuppies,
+}: {
+    puppyId: Puppy["id"];
+    setPuppies: Dispatch<SetStateAction<Puppy[]>>;
+}) {
+    const [pending, isPending] = useState(false);
+
+    return (
+        <button
+            className="group h-full border-l border-slate-100 px-2 hover:bg-slate-100"
+            onClick={async () => {
+                isPending(true);
+                const { puppy, puppies } = await toggleLikedStatus(puppyId);
+                setPuppies(puppies)
+                isPending(false);
+            }}
+            disabled={pending}
+        >
+            {pending ? (
+                <LoaderCircle className="size-4 animate-spin stroke-slate-300" />
+            ) : (
+                <X className="size-4 stroke-slate-400 group-hover:stroke-red-400" />
+            )}
+        </button>
     );
 }

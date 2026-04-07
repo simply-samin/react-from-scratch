@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "skipLibCheck": true,
-    "allowImportingTsExtensions": true
-  },
-  "include": ["src"]
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "strict": true,
+        "skipLibCheck": true,
+        "allowImportingTsExtensions": true
+    },
+    "include": ["src"]
 }

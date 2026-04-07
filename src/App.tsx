@@ -35,7 +35,6 @@ const puppyPromise = getPuppies();
 function Main() {
     const apiPuppies = use(puppyPromise);
 
-    const [liked, setLiked] = useState<Puppy["id"][]>([1, 3]);
     const [searchQuery, SetSearchQuery] = useState<string>("");
     const [puppies, setPuppies] = useState<Puppy[]>(apiPuppies);
 
@@ -47,19 +46,10 @@ function Main() {
                     searchQuery={searchQuery}
                     setSearchQuery={SetSearchQuery}
                 />
-                <Shortlist
-                    puppies={puppies}
-                    liked={liked}
-                    setLiked={setLiked}
-                />
+                <Shortlist puppies={puppies} setPuppies={setPuppies} />
             </div>
 
-            <PuppiesList
-                searchQuery={searchQuery}
-                puppies={puppies}
-                liked={liked}
-                setLiked={setLiked}
-            />
+            <PuppiesList searchQuery={searchQuery} puppies={puppies} setPuppies={setPuppies} />
             <NewPuppyForm puppies={puppies} setPuppies={setPuppies} />
         </main>
     );

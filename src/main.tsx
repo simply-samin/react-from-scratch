@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { bootstrap } from "./bootstrap";
 import "./app.css";
 import App from "./App.tsx";
 
@@ -9,8 +10,10 @@ if (!rootElement) {
     throw new Error("Root element not found");
 }
 
-createRoot(rootElement).render(
-    <StrictMode>
-        <App />
-    </StrictMode>,
-);
+bootstrap().then(() => {
+    createRoot(rootElement).render(
+        <StrictMode>
+            <App />
+        </StrictMode>,
+    );
+});

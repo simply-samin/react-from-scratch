@@ -5,13 +5,11 @@ import { LikeToggle } from "./LikeToggle";
 export function PuppiesList({
     searchQuery,
     puppies,
-    liked,
-    setLiked,
+    setPuppies,
 }: {
     searchQuery: string;
     puppies: Puppy[];
-    liked: Puppy["id"][];
-    setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
+    setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
     return (
         <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -22,12 +20,7 @@ export function PuppiesList({
                         .includes(searchQuery.toLowerCase()),
                 )
                 .map((puppy) => (
-                    <PuppyCard
-                        key={puppy.id}
-                        puppy={puppy}
-                        liked={liked}
-                        setLiked={setLiked}
-                    />
+                    <PuppyCard key={puppy.id} puppy={puppy} setPuppies={setPuppies} />
                 ))}
         </ul>
     );
@@ -35,12 +28,10 @@ export function PuppiesList({
 
 function PuppyCard({
     puppy,
-    liked,
-    setLiked,
+    setPuppies,
 }: {
     puppy: Puppy;
-    liked: Puppy["id"][];
-    setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
+    setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
     return (
         <li
@@ -58,7 +49,7 @@ function PuppyCard({
                     <span className="text-slate-300">·</span>
                     <p className="text-slate-500">{puppy.trait}</p>
                 </div>
-                <LikeToggle puppy={puppy} />
+                <LikeToggle puppy={puppy} setPuppies={setPuppies} />
             </div>
         </li>
     );

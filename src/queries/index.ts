@@ -1,5 +1,6 @@
 import {
     getAllPuppies,
+    storePuppy,
     toggleLikedStatus as togglePuppyLikedStatus,
 } from "../services/puppies";
 import { Puppy, User } from "../types";
@@ -18,4 +19,10 @@ export async function toggleLikedStatus(
         console.error(error);
         throw error;
     }
+}
+
+export async function createPuppy(
+    formData: FormData,
+): Promise<{ puppy: Puppy; puppies: Puppy[] }> {
+    return await storePuppy(formData);
 }

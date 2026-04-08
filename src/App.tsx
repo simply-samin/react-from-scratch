@@ -9,22 +9,30 @@ import { Suspense, use, useEffect, useState } from "react";
 import { Puppy } from "./types";
 import { LoaderCircle } from "lucide-react";
 import { getPuppies } from "./queries";
-import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function App() {
     return (
         <PageWrapper>
             <Container>
                 <Header />
-                <Suspense
-                    fallback={
-                        <div className="mt-12 bg-white p-6 shadow ring ring-black/5">
-                            <LoaderCircle className="animate-spin stroke-slate-300" />
-                        </div>
-                    }
+                <ErrorBoundary
+                    fallbackRender={({ error }) => (
+                        <p className="mt-12 text-center text-red-500">
+                            {(error as Error)?.message}
+                        </p>
+                    )}
                 >
-                    <Main />
-                </Suspense>
+                    <Suspense
+                        fallback={
+                            <div className="mt-12 grid h-48 place-items-center">
+                                <LoaderCircle className="animate-spin stroke-slate-300" />
+                            </div>
+                        }
+                    >
+                        <Main />
+                    </Suspense>
+                </ErrorBoundary>
             </Container>
         </PageWrapper>
     );
@@ -49,7 +57,11 @@ function Main() {
                 <Shortlist puppies={puppies} setPuppies={setPuppies} />
             </div>
 
-            <PuppiesList searchQuery={searchQuery} puppies={puppies} setPuppies={setPuppies} />
+            <PuppiesList
+                searchQuery={searchQuery}
+                puppies={puppies}
+                setPuppies={setPuppies}
+            />
             <NewPuppyForm puppies={puppies} setPuppies={setPuppies} />
         </main>
     );

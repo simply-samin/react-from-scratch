@@ -67,8 +67,18 @@ function DeleteButton({
             className="group h-full border-l border-slate-100 px-2 hover:bg-slate-100"
             onClick={async () => {
                 isPending(true);
-                const { puppy, puppies } = await toggleLikedStatus(puppyId);
-                setPuppies(puppies)
+
+                const { puppy: updatedPuppy, puppies: updatedPuppies } =
+                    await toggleLikedStatus(puppyId);
+
+                setPuppies((prevPuppies) => {
+                    return prevPuppies.map((existingPuppy) =>
+                        existingPuppy.id === updatedPuppy.id
+                            ? updatedPuppy
+                            : existingPuppy,
+                    );
+                });
+
                 isPending(false);
             }}
             disabled={pending}

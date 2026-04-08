@@ -7,8 +7,8 @@ export function LikeToggle({
     puppy,
     setPuppies,
 }: {
-    puppy: Puppy
-    setPuppies: Dispatch<SetStateAction<Puppy[]>>
+    puppy: Puppy;
+    setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
     const [pending, setPening] = useState(false);
 
@@ -21,7 +21,13 @@ export function LikeToggle({
                 const { puppy: updatedPuppy, puppies: updatedPuppies } =
                     await toggleLikedStatus(puppy.id);
 
-                setPuppies(updatedPuppies);
+                setPuppies((prevPuppies) => {
+                    return prevPuppies.map((existingPuppy) =>
+                        existingPuppy.id === updatedPuppy.id
+                            ? updatedPuppy
+                            : existingPuppy,
+                    );
+                });
 
                 setPening(false);
             }}
